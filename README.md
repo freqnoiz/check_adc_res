@@ -5,17 +5,12 @@ Nagios plugin for checking Fortinet ADC Load balancer Resources
 
 ##Usage:
   
-  -h <hostname/ip>
-  
-  -u <user>
-  
-  -p <password>
-  
-  -r <resource>
-  
-  -w <warning>
-  
-  -c <critical>
+  -h - hostname/ip
+  -u - user
+  -p - password
+  -r - resource
+  -w - warning
+  -c - critical
 
 ###To check CPU:
 ```bash
