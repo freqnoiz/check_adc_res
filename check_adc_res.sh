@@ -84,7 +84,7 @@ fi
 
 if [ -z "${stat}" ]
 then
-    output="Unable to retrive ${resource} stat from ${host}"
+    output="Unable to retrieve ${resource} stat from ${host}"
     echo "CRITICAL - $output"
     exit 2
 fi
