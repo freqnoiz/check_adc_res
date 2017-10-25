@@ -53,20 +53,22 @@ EOF
 }
 
 #Login, create session and store session-cookie
-curl -s -H "Content-Type: application/json" -X POST -d "$(login_data)" http://${host}/api/user/login --cookie-jar /tmp/adcfortinetresource_session > /dev/null
+curl -s -H "Content-Type: application/json" -X POST -d "$(login_data)" http://${host}/api/user/login --cookie-jar /tmp/adcfortinetresource_session.${pid}> /dev/null
 
-#Get stats
-stats=$(curl -s http://${host}/api/platform/resources_usage -b /tmp/adcfortinetresource_session | sed 's/{"payload":{//g' | sed 's/}}//' | sed 's/,/ /g' | xargs)
+#Get and parse stats
+stats=$(curl -s http://${host}/api/platform/resources_usage -b /tmp/adcfortinetresource_session.${pid} | sed 's/{"payload":{//g' | sed 's/}}//' | sed 's/,/ /g' | xargs)
 
 #Logout and delete cookie
-curl -s http://${host}/api/user/logout -b /tmp/adcfortinetresource_session > /dev/null
-rm /tmp/adcfortinetresource_session
+curl -s http://${host}/api/user/logout -b /tmp/adcfortinetresource_session.${pid} > /dev/null
+rm /tmp/adcfortinetresource_session.${pid}
 
+
+#Fetch right flag dependly on resource argument
 cpu=$(for i in $stats; do echo $i; done | grep cpu | sed 's/cpu://g')
 ram=$(for i in $stats; do echo $i; done | grep ram | sed 's/ram://g')
 disk=$(for i in $stats; do echo $i; done | grep disk | sed 's/disk://g')
 
-#Resource fla check
+#Resource flag check
 
 if [ "${resource}" == "cpu" ]
 then
